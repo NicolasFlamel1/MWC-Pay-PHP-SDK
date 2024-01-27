@@ -9,9 +9,16 @@ Run the following command from the root of your project to install this library 
 composer require nicolasflamel/mwc-pay
 ```
 
-
 ### Usage
-After an `MwcPay` object has been created, it can be used to create payments, query the status of payments, and get the current price of MimbleWimble coin. The following code briefly shows how to do those things. A more complete example with error checking is available [here](https://github.com/NicolasFlamel1/MWC-Pay-PHP-SDK/tree/master/example).
+After an `MwcPay` object has been created, it can be used to create payments, query the status of payments, and get the current price of MimbleWimble coin.
+
+A high level overview of a payment's life cycle when using this SDK consists of the following steps:
+1. The merchant creates a payment and gets the payment's URL from the response.
+2. The buyer sends MimbleWimble Coin to that URL.
+3. The merchant can optionally monitor the payment's status via the `getPaymentInfo` method, the `createPayment` method's `received_callback` parameter, the `createPayment` method's `confirmed_callback` parameter, and/or the `createPayment` method's `expired_callback` parameter.
+4. The payment's completed callback is ran once the payment achieves the desired number of on-chain confirmations.
+
+The following code briefly shows how to use this SDK. A more complete example with error checking is available [here](https://github.com/NicolasFlamel1/MWC-Pay-PHP-SDK/tree/master/example).
 ```
 <?php
 
@@ -37,9 +44,9 @@ $price = $mwcPay->getPrice();
 ```
 
 ### Functions
-1. MWC Pay constructor: `constructor(private string $privateServer = "http://localhost:9010")`
+1. MWC Pay constructor: `constructor(string $privateServer = "http://localhost:9010")`
 
-   This constructor accepts the following parameter:
+   This constructor is used to create an `MwcPay` object and it accepts the following parameter:
    * `string $privateServer` (optional): The URL for your MWC Pay's private server. If not provided then the default value `http://localhost:9010` will be used.
 
    This method returns the following value:
@@ -47,7 +54,7 @@ $price = $mwcPay->getPrice();
 
 2. MWC Pay create payment method: `createPayment(?string $price, ?int $requiredConfirmations, ?int $timeout, string $completedCallback, ?string $receivedCallback = NULL, ?string $confirmedCallback = NULL, ?string $expiredCallback = NULL): array | FALSE | NULL`
 
-   This method accepts the following parameters:
+   This method is used to create a payment and it accepts the following parameters:
    * `?string $price`: The expected amount for the payment. If `NULL` then any amount will fulfill the payment.
    * `?int $requiredConfirmations`: The required number of on-chain confirmations that the payment must have before it's considered complete. If `NULL` then one required confirmation will be used.
    * `?int $timeout`: The duration in seconds that the payment can be received. If `NULL` then the payment will never expire.
@@ -57,23 +64,23 @@ $price = $mwcPay->getPrice();
    * `?string $expiredCallback` (optional): The HTTP GET request that will be performed when the payment is expired. If the response status code to this request isn't `HTTP 200 OK`, then the same request will be made at a later time. This request can't follow redirects. This request may happen multiple times despite a previous attempt receiving an `HTTP 200 OK` response status code, so make sure to prepare for this and to respond to all requests with an `HTTP 200 OK` response status code if the request has already happened. All instances of `__id__` are replaced with the payment's ID. If not provided or `NULL` then no request will be performed when the payment is expired.
 
    This method returns the following values:
-   * `array`: The payment was created successfully. This array contains the `string payment_id`, `string url`, and `string recipient_payment_proof_address` for the created payment.
+   * `array`: The payment was created successfully. This array contains the `string payment_id`, `string url`, and `string recipient_payment_proof_address` of the created payment.
    * `FALSE`: An error occurred on the private server and/or communicating with the private server failed.
    * `NULL`: Parameters are invalid.
 
 3. MWC Pay get payment info method: `getPaymentInfo(string $paymentId): array | FALSE | NULL`
 
-   This method accepts the following parameters:
+   This method is used to get the status of a payment and it accepts the following parameter:
    * `string $paymentId`: The payment's ID.
 
    This method returns the following values:
-   * `array`: This array contains the payment's `string url`, `?string price`, `int required_confirmations`, `bool received`, `int confirmations`, `?int time_remaining`, `string status`, and `string recipient_payment_proof_address`.
+   * `array`: This array contains the payment's `string url`, `?string price`, `int required_confirmations`, `bool received`, `int confirmations`, `?int time_remaining`, `string status`, and `string recipient_payment_proof_address`. The `string status` can be one of the following values: `Expired`, `Not received`, `Received`, `Confirmed`, or `Completed`.
    * `FALSE`: An error occurred on the private server and/or communicating with the private server failed.
    * `NULL`: Parameters are invalid and/or the payment doesn't exist.
 
 4. MWC Pay get price method: `getPrice(): string | FALSE | NULL`
 
-   This method returns the following values:
+   This method is used to get the price of MimbleWimble coin and it returns the following values:
    * `string`: The price of MimbleWimble Coin in USDT.
    * `FALSE`: An error occurred on the private server and/or communicating with the private server failed.
-   * `NULL`: Parameters are invalid.
+   * `NULL`: Price API is disabled on the private server.
