@@ -44,7 +44,7 @@ $price = $mwcPay->getPrice();
 ```
 
 ### Functions
-1. MWC Pay constructor: `constructor(string $privateServer = "http://localhost:9010")`
+1. MWC Pay constructor: `constructor(string $privateServer = "http://localhost:9010"): MwcPay`
 
    This constructor is used to create an `MwcPay` object and it accepts the following parameter:
    * `string $privateServer` (optional): The URL for your MWC Pay's private server. If not provided then the default value `http://localhost:9010` will be used.
