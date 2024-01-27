@@ -1,8 +1,7 @@
 {
     "name": "nicolasflamel/mwc-pay",
     "description": "PHP SDK for MWC Pay",
-    "keywords": ["MWC Pay"],
-    "homepage": "https://github.com/NicolasFlamel1/MWC-Pay-PHP-SDK",
+    "keywords": ["MWC Pay", "MWC", "MimbleWimble Coin", "Mimblewimble", "Payment Processor"],
     "type": "library",
     "license": "MIT",
     "autoload": {
