@@ -224,6 +224,61 @@ class MwcPay {
 		// Return price
 		return $price["price"];
 	}
+	
+	// Get public server info
+	public function getPublicServerInfo(): array | FALSE | NULL {
+	
+		// Check if sending get public server info request to the private server failed
+		$getPublicServerInfoResponse = @file_get_contents($this->privateServer . "/get_public_server_info");
+		
+		if($getPublicServerInfoResponse === FALSE) {
+		
+			// Check if an error occurred on the private server
+			if(isset($http_response_header) === FALSE || is_array($http_response_header) === FALSE || count($http_response_header) <= 0 || preg_match('/HTTP\/[^ ]+ (\d+)/u', $http_response_header[0], $statusCode) !== 1 || $statusCode[1] === "500") {
+			
+				// Return false
+				return FALSE;
+			}
+			
+			// Otherwise assume request was invalid
+			else {
+			
+				// Return null
+				return NULL;
+			}
+		}
+		
+		// Try
+		try {
+		
+			// Get public server info from get public server info response
+			$publicServerInfo = json_decode($getPublicServerInfoResponse, TRUE, 2, JSON_THROW_ON_ERROR);
+		}
+		
+		// Catch errors
+		catch(Exception $error) {
+		
+			// Return false
+			return FALSE;
+		}
+		
+		// Check if public server info's URL or Onion Service address are invalid
+		if(is_array($publicServerInfo) === FALSE || array_key_exists("url", $publicServerInfo) === FALSE || is_string($publicServerInfo["url"]) === FALSE || $publicServerInfo["url"] === "" || array_key_exists("onion_service_address", $publicServerInfo) === FALSE || ($publicServerInfo["onion_service_address"] !== NULL && is_string($publicServerInfo["onion_service_address"]) === FALSE) || ($publicServerInfo["onion_service_address"] !== NULL && $publicServerInfo["onion_service_address"] === "")) {
+		
+			// Return false
+			return FALSE;
+		}
+		
+		// Return public server info's URL and Onion Service address
+		return [
+		
+			// URL
+			"url" => $publicServerInfo["url"],
+			
+			// Onion Service address
+			"onion_service_address" => $publicServerInfo["onion_service_address"]
+		];
+	}
 }
 
 

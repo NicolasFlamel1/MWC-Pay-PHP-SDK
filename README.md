@@ -10,7 +10,7 @@ composer require nicolasflamel/mwc-pay
 ```
 
 ### Usage
-After an `MwcPay` object has been created, it can be used to create payments, query the status of payments, and get the current price of MimbleWimble coin.
+After an `MwcPay` object has been created, it can be used to create payments, query the status of payments, get the current price of MimbleWimble coin, and get info about MWC Pay's public server.
 
 A high level overview of a payment's life cycle when using this SDK consists of the following steps:
 1. The merchant creates a payment and gets the payment's URL from the response.
@@ -39,6 +39,9 @@ $paymentInfo = $mwcPay->getPaymentInfo($payment["payment_id"]);
 
 // Get price
 $price = $mwcPay->getPrice();
+
+// Get public server info
+$publicServerInfo = $mwcPay->getPublicServerInfo();
 
 ?>
 ```
@@ -83,4 +86,11 @@ $price = $mwcPay->getPrice();
    This method is used to get the price of MimbleWimble coin and it returns the following values:
    * `string`: The price of MimbleWimble Coin in USDT.
    * `FALSE`: An error occurred on the private server and/or communicating with the private server failed.
-   * `NULL`: Price API is disabled on the private server.
+   * `NULL`: Parameters are invalid and/or the price API is disabled on the private server.
+
+5. MWC Pay get public server info method: `getPublicServerInfo(): array | FALSE | NULL`
+
+   This method is used to get info about MWC Pay's public server and it returns the following values:
+   * `array`: This array contains the public server's `string url` and `?string onion_service_address`.
+   * `FALSE`: An error occurred on the private server and/or communicating with the private server failed.
+   * `NULL`: Parameters are invalid.

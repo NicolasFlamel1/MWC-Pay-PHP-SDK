@@ -64,7 +64,7 @@ else {
 	
 		// Display payment info's URL, price, required confirmations, received, confirmations, time remaining, status, and recipient payment proof address
 		echo "URL: {$paymentInfo["url"]}" . PHP_EOL;
-		echo "Price: " . (($paymentInfo["price"] == NULL) ? "N/A" : $paymentInfo["price"]) . PHP_EOL;
+		echo "Price: " . (($paymentInfo["price"] === NULL) ? "N/A" : $paymentInfo["price"]) . PHP_EOL;
 		echo "Required confirmations: {$paymentInfo["required_confirmations"]}" . PHP_EOL;
 		echo "Received: " . (($paymentInfo["received"] === TRUE) ? "true" : "false") . PHP_EOL;
 		echo "Confirmations: {$paymentInfo["confirmations"]}" . PHP_EOL;
@@ -97,6 +97,34 @@ else {
 		
 			// Display price
 			echo "Price: $price" . PHP_EOL;
+			
+			// Display message
+			echo "Getting public server info" . PHP_EOL;
+			
+			// Get public server info
+			$publicServerInfo = $mwcPay->getPublicServerInfo();
+			
+			// Check if getting public server info failed due to invalid parameters
+			if($publicServerInfo === NULL) {
+
+				// Display error
+				echo "Invalid parameters" . PHP_EOL;
+			}
+
+			// Otherwise check if getting public server info failed due to a server error
+			else if($publicServerInfo === FALSE) {
+
+				// Display error
+				echo "Server error" . PHP_EOL;
+			}
+
+			// Otherwise
+			else {
+			
+				// Display public server info's URL and Onion Service address
+				echo "URL: {$publicServerInfo["url"]}" . PHP_EOL;
+				echo "Onion Service address: " . (($publicServerInfo["onion_service_address"] === NULL) ? "N/A" : $publicServerInfo["onion_service_address"]) . PHP_EOL;
+			}
 		}
 	}
 }
