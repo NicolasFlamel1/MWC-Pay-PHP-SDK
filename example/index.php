@@ -4,7 +4,7 @@
 // Require dependencies
 require_once __DIR__ . '/vendor/autoload.php';
 
-// Use MWC Pay namespace
+// Use MWC Pay
 use Nicolasflamel\MwcPay\MwcPay;
 
 
