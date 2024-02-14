@@ -1,6 +1,9 @@
 <?php
 
 
+// Enforce strict types
+declare(strict_types=1);
+
 // Namespace
 namespace Nicolasflamel\MwcPay;
 
