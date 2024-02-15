@@ -45,7 +45,7 @@ class MwcPay {
 			// Expired callback
 			"expired_callback" => $expiredCallback
 			
-		], function($value) {
+		], function(string | int | NULL $value): bool {
 		
 			// Return if value isn't null
 			return $value !== NULL;
