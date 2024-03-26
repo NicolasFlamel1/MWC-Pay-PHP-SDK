@@ -11,7 +11,7 @@ namespace Nicolasflamel\MwcPay;
 // Classes
 
 // MWC Pay class
-class MwcPay {
+final class MwcPay {
 
 	// Constructor
 	public function __construct(private string $privateServer = "http://localhost:9010") {
