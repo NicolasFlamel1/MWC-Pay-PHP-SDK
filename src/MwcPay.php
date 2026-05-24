@@ -60,7 +60,8 @@ final class MwcPay {
 		if($createPaymentResponse === FALSE) {
 		
 			// Check if an error occurred on the private server
-			if(isset($http_response_header) === FALSE || is_array($http_response_header) === FALSE || count($http_response_header) <= 0 || preg_match('/HTTP\/[^ ]+ (\d+)/u', $http_response_header[0], $statusCode) !== 1 || $statusCode[1] === "500") {
+			$responseHeaders = (function_exists("http_get_last_response_headers") === TRUE) ? http_get_last_response_headers() : ((isset($http_response_header) === FALSE) ? NULL : $http_response_header);
+			if(is_array($responseHeaders) === FALSE || count($responseHeaders) <= 0 || preg_match('/HTTP\/[^ ]+ (\d+)/u', $responseHeaders[0], $statusCode) !== 1 || $statusCode[1] === "500") {
 			
 				// Return false
 				return FALSE;
@@ -130,7 +131,8 @@ final class MwcPay {
 		if($getPaymentInfoResponse === FALSE) {
 		
 			// Check if an error occurred on the private server
-			if(isset($http_response_header) === FALSE || is_array($http_response_header) === FALSE || count($http_response_header) <= 0 || preg_match('/HTTP\/[^ ]+ (\d+)/u', $http_response_header[0], $statusCode) !== 1 || $statusCode[1] === "500") {
+			$responseHeaders = (function_exists("http_get_last_response_headers") === TRUE) ? http_get_last_response_headers() : ((isset($http_response_header) === FALSE) ? NULL : $http_response_header);
+			if(is_array($responseHeaders) === FALSE || count($responseHeaders) <= 0 || preg_match('/HTTP\/[^ ]+ (\d+)/u', $responseHeaders[0], $statusCode) !== 1 || $statusCode[1] === "500") {
 			
 				// Return false
 				return FALSE;
@@ -212,7 +214,8 @@ final class MwcPay {
 		if($getPriceResponse === FALSE) {
 		
 			// Check if an error occurred on the private server
-			if(isset($http_response_header) === FALSE || is_array($http_response_header) === FALSE || count($http_response_header) <= 0 || preg_match('/HTTP\/[^ ]+ (\d+)/u', $http_response_header[0], $statusCode) !== 1 || $statusCode[1] === "500") {
+			$responseHeaders = (function_exists("http_get_last_response_headers") === TRUE) ? http_get_last_response_headers() : ((isset($http_response_header) === FALSE) ? NULL : $http_response_header);
+			if(is_array($responseHeaders) === FALSE || count($responseHeaders) <= 0 || preg_match('/HTTP\/[^ ]+ (\d+)/u', $responseHeaders[0], $statusCode) !== 1 || $statusCode[1] === "500") {
 			
 				// Return false
 				return FALSE;
@@ -269,7 +272,8 @@ final class MwcPay {
 		if($getPublicServerInfoResponse === FALSE) {
 		
 			// Check if an error occurred on the private server
-			if(isset($http_response_header) === FALSE || is_array($http_response_header) === FALSE || count($http_response_header) <= 0 || preg_match('/HTTP\/[^ ]+ (\d+)/u', $http_response_header[0], $statusCode) !== 1 || $statusCode[1] === "500") {
+			$responseHeaders = (function_exists("http_get_last_response_headers") === TRUE) ? http_get_last_response_headers() : ((isset($http_response_header) === FALSE) ? NULL : $http_response_header);
+			if(is_array($responseHeaders) === FALSE || count($responseHeaders) <= 0 || preg_match('/HTTP\/[^ ]+ (\d+)/u', $responseHeaders[0], $statusCode) !== 1 || $statusCode[1] === "500") {
 			
 				// Return false
 				return FALSE;
